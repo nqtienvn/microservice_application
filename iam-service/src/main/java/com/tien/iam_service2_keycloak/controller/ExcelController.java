@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/excel")
+@RequestMapping("/api/iam-service/excel")
 @RequiredArgsConstructor
 public class ExcelController {
     private final ExcelService excelService;

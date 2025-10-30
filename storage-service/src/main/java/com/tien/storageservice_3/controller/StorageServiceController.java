@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/cloudinary")
+@RequestMapping("/api/storage-service/cloudinary")
 @RequiredArgsConstructor
 @Tag(name = "Storage Controller")
 public class StorageServiceController {

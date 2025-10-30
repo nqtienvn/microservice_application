@@ -1,6 +1,6 @@
 spring:
   application:
-    name: keycloak-service
+    name: iam-service
   data:
     redis:
       host: localhost

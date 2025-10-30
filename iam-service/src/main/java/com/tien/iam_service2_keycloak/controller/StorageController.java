@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/storage")
+@RequestMapping("/api/iam-service/storage")
 @RequiredArgsConstructor
 @Tag(name = "Storage Service Controller")
 public class StorageController {
