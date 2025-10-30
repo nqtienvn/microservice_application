@@ -1,0 +1,49 @@
+spring:
+  application:
+    name: storage-service
+  cloudinary:
+    cloud_name: dh0qn5xbk
+    api_key: 367863941559932
+    api_secret: QVOQihDhOZc7KfdzVm2aPgC4nYs
+  datasource:
+    url: jdbc:mysql://localhost:3306/storage_service
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  servlet:
+    multipart:
+      max-file-size: 100MB
+  security:
+    oauth2:
+      resource server:
+        jwt:
+          issuer-uri: http://localhost:8180/realms/tien #den tu realms nao // cai base cua khong gian realm trong keycloak
+          jwk-set-uri: ${spring.security.oauth2.resource server.jwt.issuer-uri}/protocol/openid-connect/certs #biet
+server:
+  port: 8082
+
+eureka:
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+    lease-renewal-interval-in-seconds: 5
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+    registry-fetch-interval-seconds: 5
+    fetch-registry: true
+    register-with-eureka: true
+
+open:
+  api:
+    title: "STORAGE_SERVICE"
+    version: "v1.0.0"
+    scanPackage: "com.tien.storageservice_3.controller"
+    group: "storage_service"
+    description: "manage with file"
+    url: "http://localhost:8082"
+    description-server-url: "server-dev"

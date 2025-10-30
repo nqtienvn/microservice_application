@@ -1,0 +1,91 @@
+spring:
+  application:
+    name: keycloak-service
+  data:
+    redis:
+      host: localhost
+      port: 51672
+  datasource:
+    url: jdbc:mysql://localhost:3306/iam_keycloak
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  servlet:
+    multipart:
+      max-file-size: 100MB
+  security:
+    oauth2:
+      resource server:
+        jwt:
+          issuer-uri: http://localhost:8180/realms/tien #den tu realms nao // cai base cua khong gian realm trong keycloak
+          jwk-set-uri: ${spring.security.oauth2.resource server.jwt.issuer-uri}/protocol/openid-connect/certs #biet public key de verify
+  cloud:
+    openfeign:
+      client:
+        config:
+          default:
+            connect-timeout: 5000     # ms
+            read-timeout: 5000        # ms
+            loggerLevel: FULL         # DEBUG thông tin request/response
+      circuitbreaker:
+        enabled: true    # bật khả năng tích hợp với Resilience4j/Spring Cloud Circuit Breaker
+
+resilience4j:
+  timelimiter:
+    configs:
+      default:
+        timeoutDuration: 5s  # thời gian tối đa cho 1 lời gọi Feign
+  circuitbreaker:
+    configs:
+      default:
+        slidingWindowSize: 20
+        failureRateThreshold: 50          # % lỗi để mở Circuit Breaker
+        waitDurationInOpenState: 10s      # thời gian ở trạng thái Open trước khi thử lại
+        permittedNumberOfCallsInHalfOpenState: 5  # số request thử nghiệm
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+
+
+iam:
+  use-keycloak: true
+  keycloak:
+    realm: tien
+    auth-server-url: http://localhost:8180
+    client-id: tien_app
+    client-secret: JKeoBFBJ7B2B8NvNTnUHfhM1kaZFua2s
+
+jwt:
+  secret: "NqoOR/41C1WWFKRKKX8+/E7V8VBepn+/pmFwfKP0GDOuVuwgtBslCeu3swN0KGp8nPYv/wEiLrc2z0Qra0uptOtJAFVOS+7Vju2sHbUae1U="
+  expiration: 3600000
+
+open:
+  api:
+    title: "KEYCLOAK_IAM_SERVICE"
+    scanPackage: "com.tien.iam_service2_keycloak.controller"
+    group: "iam_service"
+    version: "v1.0.0"
+    description: "manage with keycloak"
+    url: "http://localhost:8081"
+    description-server-url: "server-dev"
+
+server:
+  port: 8081
+
+eureka:
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+    lease-renewal-interval-in-seconds: 5
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+    registry-fetch-interval-seconds: 5
+    fetch-registry: true
+    register-with-eureka: true
+
+storage:
+  service:
+    url: "http://localhost:8082"
