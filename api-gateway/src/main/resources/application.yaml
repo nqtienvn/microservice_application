@@ -4,12 +4,6 @@ server:
 spring:
   application:
     name: api-gateway
-  security:
-    oauth2:
-      resource server:
-        jwt:
-          issuer-uri: http://localhost:8180/realms/tien #den tu realms nao // cai base cua khong gian realm trong keycloak
-          jwk-set-uri: ${spring.security.oauth2.resource server.jwt.issuer-uri}/protocol/openid-connect/certs #biet
 
   cloud:
     gateway:
